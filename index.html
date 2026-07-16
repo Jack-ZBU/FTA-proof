@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seeing the Fundamental Theorem of Algebra</title>
+<meta name="description" content="An interactive, visual walkthrough of the winding-number proof of the Fundamental Theorem of Algebra." />
+
+<!-- MathJax -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']]
+    },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <span class="site-title">The Fundamental Theorem of Algebra</span>
+    <nav class="site-nav" aria-label="Section navigation">
+      <a href="#intro">Intro</a>
+      <a href="#monomials">Monomials</a>
+      <a href="#polynomials">Polynomials</a>
+      <a href="#proof">The Proof</a>
+      <a href="#summary">Summary</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== INTRO ===================== -->
+  <section id="intro" class="section hero">
+    <h1>Every polynomial has a root — and you can see why</h1>
+    <p class="lede">
+      This page builds up, in three visual stages, the classic <strong>winding-number proof</strong>
+      of the Fundamental Theorem of Algebra. Each stage is animated, so you can watch the argument
+      happen instead of just reading it. The formal equations are always one click away, but you
+      shouldn't need them to follow the idea.
+    </p>
+    <p class="lede small">
+      Prerequisite: comfort with complex numbers in the form \(z = re^{it}\). No topology required —
+      we'll build the one topological idea we need (winding number) from scratch.
+    </p>
+  </section>
+
+  <!-- ===================== SECTION 1: MONOMIALS ===================== -->
+  <section id="monomials" class="section">
+    <h2>1. Complex monomials: \(z^k = r^k e^{ikt}\)</h2>
+
+    <p>
+      Start with the simplest possible building block: a single power of \(z\). Write the input in
+      polar form,
+    </p>
+    <p class="eqn">\[ z = r e^{it}. \]</p>
+    <p>
+      Here \(r\) is fixed and controls the radius of the circle the input travels around. The variable
+      \(t\) is <em>time</em> — the angle swept out as the input goes once around that circle, from
+      \(t=0\) to \(t=2\pi\). When we compare several monomials, we always feed them the <strong>same</strong>
+      \(t\) at the same moment, so we can compare how fast each one rotates.
+    </p>
+    <p>
+      Raising \(z\) to the power \(k\) does two things at once:
+    </p>
+    <ul>
+      <li>It raises the radius to the power \(k\): the output travels on a circle of radius \(r^k\).</li>
+      <li>It <strong>multiplies the angle by \(k\)</strong>: \(z^k = r^k e^{i(kt)}\).</li>
+    </ul>
+    <p>
+      So as the input \(z\) travels once around its circle, the output \(z^k\) travels <strong>\(k\)
+      times</strong> around the origin. A higher power means a higher angular velocity — the output
+      point spins faster.
+    </p>
+
+    <figure class="gif-figure">
+      <div class="gif-container">
+        <img
+          src="assets/mono/monomial_comparison.gif"
+          alt="Animation comparing three rotating monomial vectors on the complex plane: a baseline monomial a·z^k, the same setup with a different exponent, and the same setup with a different radius, each tracing a circle at its own angular speed."
+          class="gif-image"
+        />
+      </div>
+      <figcaption>
+        <strong>Three views of \(m(z) = a_k z^k\), same input \(t\).</strong>
+        Top-left: a baseline monomial. Top-right: the exponent \(k\) is changed — notice the point
+        sweeps around the origin faster or slower, but always an integer number of times per loop of
+        \(t\). Bottom: the radius \(r\) is changed instead — the path grows or shrinks (like \(r^k\))
+        but the number of times it winds around the origin is unchanged. Compare the top two panels
+        side by side to see that <em>only the exponent</em> controls angular velocity.
+      </figcaption>
+      <div class="gif-controls">
+        <button type="button" class="btn restart-btn">⟲ Restart animation</button>
+      </div>
+    </figure>
+
+    <div class="callout">
+      <p>
+        <strong>Takeaway:</strong> when \(t\) increases at the same rate for every monomial, the vector
+        \(z^k\) rotates \(k\) times as fast as \(z\) itself. The exponent controls both the output
+        radius (\(r^k\)) and the number of rotations (\(k\)). Keep this one fact in mind — it is the
+        entire engine behind the proof in Section 3.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== SECTION 2: POLYNOMIALS ===================== -->
+  <section id="polynomials" class="section">
+    <h2>2. Polynomials as sums of rotating vectors</h2>
+
+    <p>Now build a general polynomial out of these monomials:</p>
+    <p class="eqn">\[ p(z) = a_0 + a_1 z + a_2 z^2 + \cdots + a_n z^n. \]</p>
+    <p>
+      Each term \(a_k z^k\) is one rotating vector, spinning at its own angular velocity \(k\), as we
+      just saw. To visualize the sum, draw the vectors <strong>head to tail</strong>:
+    </p>
+    <ol>
+      <li>Start at the origin and draw the constant vector \(a_0\).</li>
+      <li>From its tip, attach the vector \(a_1 z\).</li>
+      <li>From that tip, attach \(a_2 z^2\).</li>
+      <li>Continue through the final term \(a_n z^n\).</li>
+    </ol>
+    <p>
+      The vector from the origin to the <em>final</em> tip is the value \(p(z)\). This is exactly
+      ordinary vector addition — we are <strong>not</strong> composing or concatenating the monomial
+      functions, only adding the complex numbers they produce at a shared instant \(t\).
+    </p>
+    <p>
+      Every one of these vectors is evaluated at the same \(z = re^{it}\). They rotate at different
+      speeds because their powers differ, and their head-to-tail sum is the polynomial's output. As
+      \(t\) sweeps from \(0\) to \(2\pi\), that final endpoint traces a closed curve — the image of the
+      input circle under \(p\).
+    </p>
+
+    <div class="eqn-box" aria-label="Endpoint equation">
+      <p class="eqn">
+        \[ p(re^{it}) = a_0 + a_1 r e^{it} + a_2 r^2 e^{2it} + \cdots + a_n r^n e^{int}. \]
+      </p>
+    </div>
+
+    <figure class="gif-figure">
+      <div class="gif-container">
+        <img
+          src="assets/poly/polynomial_radii_comparison.gif"
+          alt="Animation of a complex polynomial evaluated on circles of four different radii, showing the monomial term vectors added head to tail and the resulting closed curve traced by the polynomial's output."
+          class="gif-image"
+        />
+      </div>
+      <figcaption>
+        <strong>The same polynomial \(p(z)\) evaluated on four circles of increasing radius \(r\).</strong>
+        In each panel, the individual term vectors \(a_0, a_1 z, a_2 z^2, \dots\) are attached head to
+        tail, and the outer curve is the path traced by their sum — the endpoint, i.e. \(p(re^{it})\) —
+        as \(t\) runs from \(0\) to \(2\pi\). Watch how the shape of the closed curve changes
+        substantially as \(r\) grows: this is the deformation we exploit in Section 3.
+      </figcaption>
+      <div class="gif-controls">
+        <button type="button" class="btn restart-btn">⟲ Restart animation</button>
+      </div>
+    </figure>
+
+    <div class="callout">
+      <p>
+        <strong>Takeaway:</strong> a polynomial curve is a sum of circles spinning at different speeds.
+        Small radii keep every term small except \(a_0\); large radii let the highest power dominate.
+        That contrast between small and large \(r\) is exactly what the proof in Section 3 uses.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== SECTION 3: THE PROOF ===================== -->
+  <section id="proof" class="section">
+    <h2>3. The winding-number proof</h2>
+
+    <p>
+      <strong>Theorem.</strong> Every nonconstant complex polynomial has at least one complex root.
+      Consequently, a degree-\(n\) complex polynomial has exactly \(n\) roots, counted with
+      multiplicity.
+    </p>
+
+    <p>Let</p>
+    <p class="eqn">\[ p(z) = a_0 + a_1 z + \cdots + a_n z^n, \qquad a_n \neq 0. \]</p>
+    <p>For each radius \(r > 0\), consider the closed curve traced by the polynomial on the circle of radius \(r\):</p>
+    <p class="eqn">\[ \gamma_r(t) = p(re^{it}), \qquad 0 \le t \le 2\pi. \]</p>
+
+    <p>
+      The central animation below shows one such curve. Use the buttons to reveal the proof one stage
+      at a time.
+    </p>
+
+    <figure class="gif-figure main-proof-figure">
+      <div class="gif-container">
+        <img
+          src="assets/FTA_eg.gif"
+          alt="Animation of a polynomial's output curve gamma_r(t) sweeping around the complex plane as the input travels around a circle, with the term vectors shown head to tail and the origin marked, illustrating how the curve winds around the origin."
+          class="gif-image"
+        />
+      </div>
+      <figcaption>
+        <strong>The curve \(\gamma_r(t) = p(re^{it})\).</strong> The red dot is the polynomial's output;
+        the small "+" marks the origin. Watch how many times the red dot circles the origin as \(t\)
+        runs from \(0\) to \(2\pi\) — that count is the <strong>winding number</strong>.
+      </figcaption>
+      <div class="gif-controls">
+        <button type="button" class="btn restart-btn">⟲ Restart animation</button>
+      </div>
+    </figure>
+
+    <div class="winding-note">
+      <p>
+        <strong>Winding number, informally:</strong> the winding number of a closed curve around the
+        origin is the (signed) number of times the curve loops around the origin as you trace it once.
+        It is always a whole number for a curve that never touches the origin.
+      </p>
+    </div>
+
+    <!-- Progressive disclosure stages -->
+    <div class="stage-list">
+
+      <div class="stage" id="stage-a">
+        <button class="stage-toggle" aria-expanded="false" aria-controls="stage-a-body">
+          <span class="stage-label">Stage A — Begin with a very small circle</span>
+          <span class="chevron">▸</span>
+        </button>
+        <div class="stage-body" id="stage-a-body" hidden>
+          <p>When \(r\) is very small, every term except the constant is tiny, so</p>
+          <p class="eqn">\[ p(re^{it}) \approx a_0. \]</p>
+          <p>
+            The curve is only a small deformation of the fixed point \(a_0\). Assuming \(a_0 \neq 0\),
+            this tiny curve stays clustered near \(a_0\) and never gets close enough to the origin to
+            wind around it. Its winding number around \(0\) is therefore <strong>\(0\)</strong>.
+          </p>
+          <p>
+            <em>Edge case:</em> if \(a_0 = 0\), we are already done — \(z = 0\) is a root of \(p\), and
+            the theorem holds trivially.
+          </p>
+        </div>
+      </div>
+
+      <div class="stage" id="stage-b">
+        <button class="stage-toggle" aria-expanded="false" aria-controls="stage-b-body">
+          <span class="stage-label">Stage B — Increase the radius</span>
+          <span class="chevron">▸</span>
+        </button>
+        <div class="stage-body" id="stage-b-body" hidden>
+          <p>
+            Now let \(r\) grow continuously from small to large. Because \(p\) is a polynomial — and
+            polynomials are continuous — the curve \(\gamma_r\) changes continuously as a function of
+            both \(r\) and \(t\). There are no sudden jumps: a small change in \(r\) produces only a
+            small change in the curve. Look back at the Section 2 animation: it shows exactly this
+            kind of continuous change in shape as \(r\) increases across four radii.
+          </p>
+        </div>
+      </div>
+
+      <div class="stage" id="stage-c">
+        <button class="stage-toggle" aria-expanded="false" aria-controls="stage-c-body">
+          <span class="stage-label">Stage C — Look at a very large circle</span>
+          <span class="chevron">▸</span>
+        </button>
+        <div class="stage-body" id="stage-c-body" hidden>
+          <p>For sufficiently large \(r\), the highest-power term dominates every other term:</p>
+          <p class="eqn">\[ p(re^{it}) \approx a_n r^n e^{int}. \]</p>
+          <p>
+            This leading term travels around the origin exactly \(n\) times as \(t\) runs from \(0\) to
+            \(2\pi\) — that is Section 1's rule, \(z^n\) winds \(n\) times as fast as \(z\). So for a
+            sufficiently large circle, the polynomial curve has winding number <strong>\(n\)</strong>
+            around the origin.
+          </p>
+          <p>Why do the lower-degree terms become insignificant? Compare any term \(k < n\) to the leading term:</p>
+          <p class="eqn">\[ \frac{|a_k| r^k}{|a_n| r^n} = \frac{|a_k|}{|a_n|\, r^{\,n-k}} \longrightarrow 0 \quad \text{as } r \to \infty. \]</p>
+          <p>Every smaller power shrinks to nothing next to \(a_n r^n\) once \(r\) is large enough.</p>
+        </div>
+      </div>
+
+      <div class="stage" id="stage-d">
+        <button class="stage-toggle" aria-expanded="false" aria-controls="stage-d-body">
+          <span class="stage-label">Stage D — The contradiction</span>
+          <span class="chevron">▸</span>
+        </button>
+        <div class="stage-body" id="stage-d-body" hidden>
+          <p>Here is the one topological fact the whole proof rests on:</p>
+          <div class="callout emphasis">
+            <p>A closed curve can change its winding number around the origin <strong>only</strong> by passing through the origin.</p>
+          </div>
+          <p>
+            This should feel plausible: the winding number is an integer count of loops. To change from
+            one whole number of loops to another, the curve has to cross over the point it's winding
+            around — otherwise the "loop count" can't tick up or down.
+          </p>
+          <p>Now suppose, for contradiction, that \(p\) has <strong>no</strong> root. Then</p>
+          <p class="eqn">\[ p(re^{it}) \neq 0 \quad \text{for every } r > 0 \text{ and every } t. \]</p>
+          <p>
+            The curves \(\gamma_r\) would then deform continuously from the small-radius curve to the
+            large-radius curve <strong>without ever touching the origin</strong>. By the fact above,
+            their winding number would have to stay exactly the same the whole time.
+          </p>
+          <p>
+            But we just showed the winding number starts at \(0\) (Stage A) and ends at \(n\) (Stage C).
+            If \(p\) is nonconstant, \(n \geq 1\), so \(0 \neq n\) — the winding number is <em>not</em>
+            the same at both ends. Contradiction.
+          </p>
+          <p>Therefore the assumption was false: there must exist some radius \(r\) and angle \(t\) with</p>
+          <p class="eqn">\[ p(re^{it}) = 0. \]</p>
+          <p>The polynomial has at least one complex root.</p>
+        </div>
+      </div>
+
+      <div class="stage" id="stage-e">
+        <button class="stage-toggle" aria-expanded="false" aria-controls="stage-e-body">
+          <span class="stage-label">Stage E — Why there are exactly \(n\) roots</span>
+          <span class="chevron">▸</span>
+        </button>
+        <div class="stage-body" id="stage-e-body" hidden>
+          <p>
+            The winding argument above proves existence of a <em>single</em> root — it does
+            <strong>not</strong> say the curve crosses the origin \(n\) separate times, and we will not
+            claim that.
+          </p>
+          <p>Instead, the rest of the count follows by factoring:</p>
+          <ul>
+            <li>Stage D shows every nonconstant complex polynomial has at least one root \(\alpha\).</li>
+            <li>
+              Once \(p(\alpha) = 0\), polynomial division gives \(p(z) = (z - \alpha)\, q(z)\), where
+              \(q\) has degree \(n-1\).
+            </li>
+            <li>If \(q\) is nonconstant, apply Stage D again to \(q\) to find another root.</li>
+            <li>Repeating this \(n\) times peels off \(n\) linear factors, giving \(n\) roots counted with multiplicity.</li>
+          </ul>
+          <div class="advanced-note">
+            <p>
+              <strong>Advanced note (argument principle).</strong> A stronger statement is true: the
+              winding number of \(\gamma_r\) equals the number of zeros of \(p\) lying strictly inside
+              the circle of radius \(r\), counted with multiplicity — provided \(\gamma_r\) never passes
+              through the origin. This is a special case of the argument principle from complex
+              analysis, and it is what ultimately justifies counting "\(n\) roots," not just "at least
+              one."
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="reveal-all-row">
+      <button class="btn btn-secondary" id="reveal-all-btn">Show all stages</button>
+    </div>
+
+    <button class="btn btn-primary math-toggle" id="math-toggle-btn" aria-expanded="false" aria-controls="math-version">
+      Show the mathematical version
+    </button>
+    <div id="math-version" class="math-version" hidden>
+      <h3>Formal statement</h3>
+      <p>
+        Let \(p(z) = \sum_{k=0}^n a_k z^k\) with \(a_n \neq 0\) and \(n \geq 1\). For \(r > 0\) define
+        \(\gamma_r : [0, 2\pi] \to \mathbb{C}\) by \(\gamma_r(t) = p(re^{it})\).
+      </p>
+      <p>
+        If \(\gamma_r\) never passes through \(0\), its winding number \(w(r) = \frac{1}{2\pi}
+        \big(\arg \gamma_r(2\pi) - \arg \gamma_r(0)\big)\) (with continuous branch of \(\arg\) along the
+        curve) is a well-defined integer, and \(w(r)\) is locally constant in \(r\) wherever \(\gamma_r\)
+        avoids \(0\), since winding number is a continuous integer-valued function of continuously
+        varying non-vanishing loops.
+      </p>
+      <p>
+        As \(r \to 0^+\), \(\gamma_r \to a_0\) uniformly, so for small enough \(r\) (assuming
+        \(a_0 \neq 0\)), \(\gamma_r\) is homotopic to the constant loop at \(a_0\) within
+        \(\mathbb{C}\setminus\{0\}\), giving \(w(r) = 0\).
+      </p>
+      <p>
+        As \(r \to \infty\), \(\big\| \gamma_r(t) - a_n r^n e^{int} \big\| = O(r^{n-1})\) while
+        \(|a_n r^n e^{int}| = |a_n| r^n\), so for sufficiently large \(r\), \(\gamma_r\) is homotopic
+        (within \(\mathbb{C}\setminus\{0\}\)) to \(t \mapsto a_n r^n e^{int}\), which has winding number
+        \(n\).
+      </p>
+      <p>
+        If \(p\) had no zero anywhere, \(\gamma_r(t) \neq 0\) for all \(r, t\), so \(w(r)\) would be
+        constant for all \(r > 0\) — contradicting \(w(r) \to 0\) as \(r \to 0^+\) and \(w(r) \to n\) as
+        \(r \to \infty\). Hence \(p\) has a zero \(\alpha \in \mathbb{C}\).
+      </p>
+      <p>
+        Writing \(p(z) = (z-\alpha) q(z)\) with \(\deg q = n - 1\) and inducting on degree gives \(n\)
+        zeros of \(p\), counted with multiplicity. \(\blacksquare\)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== SUMMARY ===================== -->
+  <section id="summary" class="section summary-section">
+    <h2>Proof summary</h2>
+    <ol class="summary-list">
+      <li>Near \(r = 0\), the constant term dominates, so the winding number is \(0\).</li>
+      <li>For large \(r\), the leading term dominates, so the winding number is \(n\).</li>
+      <li>The winding number cannot change during a continuous deformation unless the curve passes through the origin.</li>
+      <li>Therefore \(p(z) = 0\) for some complex number \(z\).</li>
+      <li>Factor out that root and repeat to obtain \(n\) roots, counted with multiplicity.</li>
+    </ol>
+  </section>
+
+  <footer class="site-footer">
+    <p>
+      Animations generated from the accompanying Jupyter notebooks (<code>mono.ipynb</code>,
+      <code>poly.ipynb</code>, <code>FTA.ipynb</code>). Built with plain HTML, CSS, and JavaScript;
+      typeset with MathJax.
+    </p>
+  </footer>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
