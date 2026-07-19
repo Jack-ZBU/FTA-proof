@@ -31,7 +31,7 @@ Then open `http://localhost:8000` in your browser.
 
 1. Push this directory to the root of a GitHub repository.
 2. In the repo settings, enable GitHub Pages for the `main` branch, root folder.
-3. The site will be served at `[https://<username>.github.io/<repo>/](https://jack-zbu.github.io/FTA-proof/)` — all asset paths in
+3. The site will be served at `https://jack-zbu.github.io/FTA-proof/` — all asset paths in
    this project are relative, so no configuration changes are needed.
 
 ## Project structure
